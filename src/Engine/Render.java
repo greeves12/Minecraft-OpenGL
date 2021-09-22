@@ -4,6 +4,7 @@ import Engine.Entities.Entity;
 import Engine.Math.Math;
 import Models.RawModel;
 import Models.TexturedModel;
+import Shaders.GrassShader;
 import Shaders.StaticShader;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
@@ -23,8 +24,10 @@ public class Render {
 	}
 
 	public void prepare() {
-		GL11.glClearColor(1, 0, 0, 1);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClearColor(0, 0, 0, 1);
+
 	}
 	
 	public void render(Entity entity, StaticShader shader) {

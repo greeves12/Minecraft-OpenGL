@@ -1,27 +1,29 @@
 package Shaders;
 
+
 import Engine.Camera;
 import Engine.Math.Math;
 import org.lwjgl.util.vector.Matrix4f;
 
-public class StaticShader extends ShaderProgram{
+public class GrassShader extends ShaderProgram{
 
-    private static final String VERTEX_FILE = "src/vertexShader.txt";
-    private static final String Fragment_FILE = "src/fragementShader.txt";
+
+    private static final String VERTEX_FILE = "src/grassVertexShader.txt";
+    private static final String Fragment_FILE = "src/grassFragementShader.txt";
 
     private int location_matrix;
     private int location__projectionMatrix;
     private int viewMatrix;
 
-    public StaticShader() {
+    public GrassShader() {
         super(VERTEX_FILE, Fragment_FILE);
     }
 
     @Override
     protected void getAllUniformLocations() {
-       location_matrix =  super.getUniformLocation("transformationMatrix");
-       location__projectionMatrix = super.getUniformLocation("projectionMatrix");
-       viewMatrix = super.getUniformLocation("viewMatrix");
+        location_matrix =  super.getUniformLocation("transformationMatrix");
+        location__projectionMatrix = super.getUniformLocation("projectionMatrix");
+        viewMatrix = super.getUniformLocation("viewMatrix");
     }
 
     @Override
