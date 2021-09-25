@@ -8,6 +8,7 @@ import Shaders.StaticShader;
 import Textures.ModelTexture;
 import minecraft.BlockStates.GrassBlock;
 import minecraft.BlockStates.Material;
+import minecraft.ChunkGeneration.ChunkGeneration;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -124,12 +125,17 @@ public class Main {
 		TexturedModel grassModel = new TexturedModel(model, grass);
 		TexturedModel dirtModel = new TexturedModel(m, dirt);
 
-		ArrayList<Entity> grassBlocks = new ArrayList<>();
-		GrassBlock grassBlock = new GrassBlock(grassModel, new Vector3f(0,0,0),0,0,0,1, false, Material.GRASS);
-		grassBlocks.add(grassBlock);
-		grassBlocks.add(new GrassBlock(grassModel, new Vector3f(0,0,-1), 0,0,0,1, false, Material.GRASS));
+		Camera camera = new Camera(0, 80, 0, 0, 0, 0);
 
-		Camera camera = new Camera(0, 0, 0, 0, 0, 0);
+		ChunkGeneration generateWorld = new ChunkGeneration();
+		generateWorld.generateAroundPlayer((int)camera.getPosition().x, (int)camera.getPosition().y, (int)camera.getPosition().z);
+
+
+		ArrayList<Entity> grassBlocks = generateWorld.loadedChunks.get(0).blocks;
+		//GrassBlock grassBlock = new GrassBlock( new Vector3f(0,0,0),0,0,0,1, false, Material.GRASS);
+		//grassBlocks.add(grassBlock);
+		//grassBlocks.add(new GrassBlock(new Vector3f(0,0,-1), 0,0,0,1, false, Material.GRASS));
+
 
 		try {
 			Mouse.create();
@@ -142,24 +148,14 @@ public class Main {
 		while(!Display.isCloseRequested()) {
 			camera.move();
 			render.prepare();
-			shader.start();
-
-			shader.loadViewMatrix(camera);
 
 			for(Entity entity : grassBlocks) {
-				render.render(entity, shader);
+				if(entity.getMaterial() == Material.GRASS) {
+					GrassBlock block = (GrassBlock) entity;
+					block.render(block, shader, camera);
+
+				}
 			}
-
-			shader.stop();
-
-
-			//glDisable(GL_TEXTURE_2D);
-
-			//grassShader.start();
-			//grassShader.loadViewMatrix(camera);
-			//grassRender.render(f2, grassShader);
-
-			//grassShader.stop();
 
 			DisplayManager.updateDisplayer();
 		}

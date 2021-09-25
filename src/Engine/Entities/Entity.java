@@ -1,8 +1,21 @@
 package Engine.Entities;
 
+import Engine.Camera;
+import Engine.Math.Math;
+import Models.RawModel;
 import Models.TexturedModel;
+import Shaders.ShaderProgram;
+import Shaders.StaticShader;
 import minecraft.BlockStates.Material;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
 
 public class Entity{
 
@@ -29,8 +42,8 @@ public class Entity{
         this.material = material;
     }
 
-    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
-        this.model = model;
+    public Entity(Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
+        //this.model = model;
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
@@ -183,4 +196,5 @@ public class Entity{
             23,21,22
 
     };
+
 }
