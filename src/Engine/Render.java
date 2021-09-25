@@ -9,6 +9,9 @@ import Shaders.StaticShader;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+
 public class Render {
 
 	private Matrix4f projectionMatrix;
@@ -45,6 +48,8 @@ public class Render {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
 
 	private void createProjectionMatrix(){

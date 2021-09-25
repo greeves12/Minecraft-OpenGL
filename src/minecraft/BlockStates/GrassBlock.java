@@ -1,15 +1,13 @@
 package minecraft.BlockStates;
 
-public class GrassBlock extends Block {
+import Engine.Entities.Entity;
+import Models.TexturedModel;
+import org.lwjgl.util.vector.Vector3f;
 
-    public GrassBlock (int x, int y, int z, boolean hasGravity){
-        this.setX(x);
-        this.setY(y);
-        this.setZ(z);
-        this.setHasGravity(false);
-        this.setMaterial(Material.GRASS);
+public class GrassBlock extends Entity {
+
+
+    public GrassBlock(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
+        super(model, position, rotX, rotY, rotZ, scale, hasGravity, material);
     }
-
-
-
 }

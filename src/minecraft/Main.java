@@ -1,27 +1,21 @@
 package minecraft;
 
-import Engine.Camera;
+import Engine.*;
 import Engine.Entities.Entity;
 import Models.TexturedModel;
 import Shaders.GrassShader;
 import Shaders.StaticShader;
 import Textures.ModelTexture;
 import minecraft.BlockStates.GrassBlock;
+import minecraft.BlockStates.Material;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
-import Engine.DisplayManager;
-import Engine.Loader;
 import Models.RawModel;
-import Engine.Render;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
 
@@ -32,6 +26,7 @@ public class Main {
 		StaticShader shader = new StaticShader();
 		GrassShader grassShader = new GrassShader();
 		Render render = new Render(shader);
+		GrassRender grassRender = new GrassRender(grassShader);
 
 
 		float[] vertices = {
@@ -53,17 +48,7 @@ public class Main {
 				-0.5f,0.5f,-0.5f,
 				-0.5f,-0.5f,-0.5f,
 				-0.5f,-0.5f,0.5f,
-				-0.5f,0.5f,0.5f,
-
-				/*-0.5f,0.5f,0.5f,
-				-0.5f,0.5f,-0.5f,
-				0.5f,0.5f,-0.5f,
-				0.5f,0.5f,0.5f,
-
-				-0.5f,-0.5f,0.5f,
-				-0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,-0.5f,
-				0.5f,-0.5f,0.5f*/
+				-0.5f,0.5f,0.5f
 
 		};
 
@@ -73,6 +58,9 @@ public class Main {
 				0.5f,0.5f,-0.5f,
 				0.5f,0.5f,0.5f,
 
+		};
+
+		float [] v2 = {
 				-0.5f,-0.5f,0.5f,
 				-0.5f,-0.5f,-0.5f,
 				0.5f,-0.5f,-0.5f,
@@ -127,22 +115,21 @@ public class Main {
 
 		RawModel model = loader.loadToVAO(vertices,textureCoords, indices);
 		RawModel m = loader.loadToVAO(v,textureCoords, indices);
-		ModelTexture emerald = new ModelTexture(loader.loadTexture("grass_block_top"));
+		RawModel m2 = loader.loadToVAO(v2,textureCoords, indices);
+
+		ModelTexture dirt = new ModelTexture(loader.loadTexture("dirt"));
 		ModelTexture grass = new ModelTexture(loader.loadTexture("grass_block_side"));
-		TexturedModel emeraldModel = new TexturedModel(m, emerald);
+		ModelTexture emerald = new ModelTexture(loader.loadTexture("emerald_ore"));
+		TexturedModel emeraldModel = new TexturedModel(m2, emerald);
 		TexturedModel grassModel = new TexturedModel(model, grass);
+		TexturedModel dirtModel = new TexturedModel(m, dirt);
 
-		ArrayList<GrassBlock> grassBlocks = new ArrayList<>();
-
-		Entity f1 = new Entity(grassModel, new Vector3f(0,0,-1), 0,0,0,1);
-		Entity f2 = new Entity(emeraldModel, new Vector3f(0,0,-1), 0,0,0,1);
+		ArrayList<Entity> grassBlocks = new ArrayList<>();
+		GrassBlock grassBlock = new GrassBlock(grassModel, new Vector3f(0,0,0),0,0,0,1, false, Material.GRASS);
+		grassBlocks.add(grassBlock);
+		grassBlocks.add(new GrassBlock(grassModel, new Vector3f(0,0,-1), 0,0,0,1, false, Material.GRASS));
 
 		Camera camera = new Camera(0, 0, 0, 0, 0, 0);
-
-		GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-
 
 		try {
 			Mouse.create();
@@ -151,16 +138,29 @@ public class Main {
 		}
 
 		Mouse.setGrabbed(true);
+
 		while(!Display.isCloseRequested()) {
 			camera.move();
 			render.prepare();
 			shader.start();
 
 			shader.loadViewMatrix(camera);
-			render.render(f1, shader);
-			render.render(f2, shader);
+
+			for(Entity entity : grassBlocks) {
+				render.render(entity, shader);
+			}
+
 			shader.stop();
-			//GL20.glDisableVertexAttribArray(GL_COLOR);
+
+
+			//glDisable(GL_TEXTURE_2D);
+
+			//grassShader.start();
+			//grassShader.loadViewMatrix(camera);
+			//grassRender.render(f2, grassShader);
+
+			//grassShader.stop();
+
 			DisplayManager.updateDisplayer();
 		}
 

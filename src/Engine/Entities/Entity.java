@@ -1,22 +1,43 @@
 package Engine.Entities;
 
 import Models.TexturedModel;
+import minecraft.BlockStates.Material;
 import org.lwjgl.util.vector.Vector3f;
 
-public class Entity {
+public class Entity{
 
     private TexturedModel model;
     private Vector3f position;
     private float rotX, rotY, rotZ;
     private float scale;
+    private boolean hasGravity;
+    private Material material;
 
-    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    public boolean isHasGravity() {
+        return hasGravity;
+    }
+
+    public void setHasGravity(boolean hasGravity) {
+        this.hasGravity = hasGravity;
+    }
+
+    public Material getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(Material material) {
+        this.material = material;
+    }
+
+    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
         this.model = model;
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
         this.rotZ = rotZ;
         this.scale = scale;
+        this.hasGravity = hasGravity;
+        this.material = material;
     }
 
     public void increasePosition(float dx, float dy, float dz){
@@ -78,4 +99,88 @@ public class Entity {
     public void setScale(float scale) {
         this.scale = scale;
     }
+
+    public float[] vertices = {
+            -0.5f,0.5f,-0.5f,
+            -0.5f,-0.5f,-0.5f,
+            0.5f,-0.5f,-0.5f,
+            0.5f,0.5f,-0.5f,
+
+            -0.5f,0.5f,0.5f,
+            -0.5f,-0.5f,0.5f,
+            0.5f,-0.5f,0.5f,
+            0.5f,0.5f,0.5f,
+
+            0.5f,0.5f,-0.5f,
+            0.5f,-0.5f,-0.5f,
+            0.5f,-0.5f,0.5f,
+            0.5f,0.5f,0.5f,
+
+            -0.5f,0.5f,-0.5f,
+            -0.5f,-0.5f,-0.5f,
+            -0.5f,-0.5f,0.5f,
+            -0.5f,0.5f,0.5f
+
+    };
+
+    public float [] top_face = {
+            -0.5f,0.5f,0.5f,
+            -0.5f,0.5f,-0.5f,
+            0.5f,0.5f,-0.5f,
+            0.5f,0.5f,0.5f,
+
+    };
+
+   public float [] bottom_face = {
+            -0.5f,-0.5f,0.5f,
+            -0.5f,-0.5f,-0.5f,
+            0.5f,-0.5f,-0.5f,
+            0.5f,-0.5f,0.5f
+    };
+
+   public float[] textureCoords = {
+
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0,
+            0,0,
+            0,1,
+            1,1,
+            1,0
+
+
+    };
+
+    public int[] indices = {
+            0,1,3,
+            3,1,2,
+            4,5,7,
+            7,5,6,
+            8,9,11,
+            11,9,10,
+            12,13,15,
+            15,13,14,
+            16,17,19,
+            19,17,18,
+            20,21,23,
+            23,21,22
+
+    };
 }
