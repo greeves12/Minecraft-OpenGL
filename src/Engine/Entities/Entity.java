@@ -113,7 +113,7 @@ public class Entity{
         this.scale = scale;
     }
 
-    public float[] vertices = {
+    public static float[] vertices = {
             -0.5f,0.5f,-0.5f,
             -0.5f,-0.5f,-0.5f,
             0.5f,-0.5f,-0.5f,
@@ -136,7 +136,7 @@ public class Entity{
 
     };
 
-    public float [] top_face = {
+    public static float [] top_face = {
             -0.5f,0.5f,0.5f,
             -0.5f,0.5f,-0.5f,
             0.5f,0.5f,-0.5f,
@@ -144,14 +144,14 @@ public class Entity{
 
     };
 
-   public float [] bottom_face = {
+   public static float [] bottom_face = {
             -0.5f,-0.5f,0.5f,
             -0.5f,-0.5f,-0.5f,
             0.5f,-0.5f,-0.5f,
             0.5f,-0.5f,0.5f
     };
 
-   public float[] textureCoords = {
+   public static float[] textureCoords = {
 
             0,0,
             0,1,
@@ -181,7 +181,7 @@ public class Entity{
 
     };
 
-    public int[] indices = {
+    public static int[] indices = {
             0,1,3,
             3,1,2,
             4,5,7,
@@ -196,5 +196,28 @@ public class Entity{
             23,21,22
 
     };
+
+    public void main_render(Entity entity, StaticShader shader, Camera camera) {
+
+        shader.start();
+        shader.loadViewMatrix(camera);
+        TexturedModel texturedModel = new TexturedModel(EntityModels.sideModel, EntityModels.grassSide);
+        RawModel model = texturedModel.getRawModel();
+        GL30.glBindVertexArray(model.getVaoID());
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glEnableVertexAttribArray(1);
+        Matrix4f matrix = Math.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+        shader.loadTransformationMatrix(matrix);
+
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getTexture().getID());
+        GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);;
+        GL20.glDisableVertexAttribArray(0);
+        GL20.glDisableVertexAttribArray(1);
+        GL30.glBindVertexArray(0);
+        GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        shader.stop();
+    }
 
 }

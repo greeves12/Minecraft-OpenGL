@@ -41,6 +41,9 @@ public class DisplayManager {
 		long current = currentTime();
 		delta = (current - frameTime) / 1000f;
 		frameTime = current;
+
+		System.out.println(delta);
+
 	}
 
 	private static long currentTime(){

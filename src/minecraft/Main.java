@@ -14,11 +14,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import Models.RawModel;
-import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
 
 public class Main {
+
+	public static boolean running;
 
 	public static void main(String[] args) {
 		DisplayManager.createDisplay();
@@ -29,6 +30,7 @@ public class Main {
 		Render render = new Render(shader);
 		GrassRender grassRender = new GrassRender(grassShader);
 
+		running = true;
 
 		float[] vertices = {
 				-0.5f,0.5f,-0.5f,
@@ -130,11 +132,11 @@ public class Main {
 		ChunkGeneration generateWorld = new ChunkGeneration();
 		generateWorld.generateAroundPlayer((int)camera.getPosition().x, (int)camera.getPosition().y, (int)camera.getPosition().z);
 
+		ArrayList<Entity> grassBlocks = new ArrayList<>();
+		if(!generateWorld.loadedChunks.isEmpty()) {
+			 grassBlocks = generateWorld.loadedChunks.get(0).blocks;
+		}
 
-		ArrayList<Entity> grassBlocks = generateWorld.loadedChunks.get(0).blocks;
-		//GrassBlock grassBlock = new GrassBlock( new Vector3f(0,0,0),0,0,0,1, false, Material.GRASS);
-		//grassBlocks.add(grassBlock);
-		//grassBlocks.add(new GrassBlock(new Vector3f(0,0,-1), 0,0,0,1, false, Material.GRASS));
 
 
 		try {
@@ -145,15 +147,23 @@ public class Main {
 
 		Mouse.setGrabbed(true);
 
+
 		while(!Display.isCloseRequested()) {
 			camera.move();
 			render.prepare();
 
+			int x = 0;
+
 			for(Entity entity : grassBlocks) {
 				if(entity.getMaterial() == Material.GRASS) {
 					GrassBlock block = (GrassBlock) entity;
-					block.render(block, shader, camera);
 
+
+					if(x < 1024) {
+						block.render(block, shader, camera);
+
+					}
+					x++;
 				}
 			}
 
@@ -164,5 +174,7 @@ public class Main {
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 		Mouse.destroy();
+
+		running = false;
 	}
 }

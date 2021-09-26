@@ -2,13 +2,12 @@ package minecraft.BlockStates;
 
 import Engine.Camera;
 import Engine.Entities.Entity;
+import Engine.Entities.EntityModels;
 import Engine.Loader;
 import Engine.Math.Math;
 import Models.RawModel;
 import Models.TexturedModel;
-import Shaders.GrassShader;
 import Shaders.StaticShader;
-import Textures.ModelTexture;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -20,19 +19,6 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 
 public class GrassBlock extends Entity {
-
-    private Loader loader = new Loader();
-    private ModelTexture grass = new ModelTexture(loader.loadTexture("grass_top"));
-    private RawModel topModel = loader.loadToVAO(super.top_face, super.textureCoords, super.indices);
-    private TexturedModel topTexture = new TexturedModel(topModel, grass);
-
-    private ModelTexture bottom = new ModelTexture(loader.loadTexture("dirt"));
-    private RawModel bottomModel = loader.loadToVAO(super.bottom_face, super.textureCoords, super.indices);
-    private TexturedModel bottomTexture = new TexturedModel(bottomModel, bottom);
-
-    private ModelTexture sides = new ModelTexture(loader.loadTexture("grass_block_side"));
-    private RawModel sideModel = loader.loadToVAO(super.vertices, super.textureCoords, super.indices);
-    private TexturedModel sideTexture = new TexturedModel(sideModel, sides);
 
     public GrassBlock( Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
         super( position, rotX, rotY, rotZ, scale, hasGravity, material);
@@ -49,7 +35,7 @@ public class GrassBlock extends Entity {
 
         shader.start();
         shader.loadViewMatrix(camera);
-        TexturedModel texturedModel = topTexture;
+        TexturedModel texturedModel = new TexturedModel(EntityModels.topModel, EntityModels.grassTop);
         RawModel model = texturedModel.getRawModel();
         GL30.glBindVertexArray(model.getVaoID());
         GL20.glEnableVertexAttribArray(0);
@@ -71,7 +57,7 @@ public class GrassBlock extends Entity {
     private void render_bottom(Entity entity, StaticShader shader, Camera camera){
         shader.start();
         shader.loadViewMatrix(camera);
-        TexturedModel texturedModel = bottomTexture;
+        TexturedModel texturedModel = new TexturedModel(EntityModels.bottomModel, EntityModels.dirt);
         RawModel model = texturedModel.getRawModel();
         GL30.glBindVertexArray(model.getVaoID());
         GL20.glEnableVertexAttribArray(0);
@@ -94,7 +80,7 @@ public class GrassBlock extends Entity {
 
         shader.start();
         shader.loadViewMatrix(camera);
-        TexturedModel texturedModel = sideTexture;
+        TexturedModel texturedModel = new TexturedModel(EntityModels.sideModel, EntityModels.grassSide);
         RawModel model = texturedModel.getRawModel();
         GL30.glBindVertexArray(model.getVaoID());
         GL20.glEnableVertexAttribArray(0);
