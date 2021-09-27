@@ -16,6 +16,8 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.util.List;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 
@@ -26,13 +28,13 @@ public class GrassBlock extends Entity {
     private int displayTop = 1;
     private int displaySides = 1;
     private int displayBottom = 1;
-    private TexturedModel model;
+    private List<TexturedModel> model;
     private int count = 0;
     private static TexturedModel topTexture = new TexturedModel(EntityModels.topModel, EntityModels.grassTop);
     private static TexturedModel bottomTexture = new TexturedModel(EntityModels.bottomModel, EntityModels.dirt);
     private static TexturedModel sideTexture = new TexturedModel(EntityModels.sideModel, EntityModels.grassSide);
 
-    public GrassBlock(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
+    public GrassBlock(List<TexturedModel> model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
         super(model, position, rotX, rotY, rotZ, scale, hasGravity, material);
         this.queryTop = new Query(GL15.GL_SAMPLES_PASSED);
         this.queryBottom = new Query(GL15.GL_SAMPLES_PASSED);
@@ -72,7 +74,6 @@ public class GrassBlock extends Entity {
             }else{
                 displayTop = 0;
             }
-            //System.out.println(samples);
         }
 
         if(!queryTop.isInUse()) {

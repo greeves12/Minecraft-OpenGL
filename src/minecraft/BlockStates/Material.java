@@ -4,5 +4,6 @@ public enum Material {
 
     GRASS,
     DIRT,
-    EMERALD_ORE
+    EMERALD_ORE,
+    STONE
 }

@@ -18,7 +18,7 @@ public class MasterRender {
     private StaticShader shader = new StaticShader();
     private Render render = new Render(shader);
 
-    private Map<TexturedModel, List<Entity>>  entities = new HashMap<>();
+    private Map<List<TexturedModel>, List<Entity>>  entities = new HashMap<>();
 
     public void render(Camera camera){
         render.prepare();
@@ -27,12 +27,11 @@ public class MasterRender {
         render.render(entities);
         shader.stop();
         entities.clear();
-        GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     }
 
     public void processEntity(Entity entity){
-        TexturedModel model = entity.getModel();
+        List<TexturedModel> model = entity.getModel();
+
         List<Entity> batch = entities.get(model);
 
         if(batch != null){

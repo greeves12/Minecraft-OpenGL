@@ -9,6 +9,7 @@ import Shaders.GrassShader;
 import Shaders.ShaderProgram;
 import Shaders.StaticShader;
 import Textures.ModelTexture;
+import minecraft.BlockStates.GrassBlock;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -40,17 +41,20 @@ public class Render {
 		GL11.glClearColor(0, 0, 0, 1);
 	}
 
-	public void render(Map<TexturedModel, List<Entity>> entities){
-		for(TexturedModel model : entities.keySet()){
-			prepareTexturedModel(model);
+	public void render(Map<List<TexturedModel>, List<Entity>> entities){
+		for(List<TexturedModel> model : entities.keySet()){
+			for(TexturedModel model1 : model) {
+				prepareTexturedModel(model1);
 
-			List<Entity> batch = entities.get(model);
+				List<Entity> batch = entities.get(model);
 
-			for(Entity entity : batch){
-				preparedInstance(entity);
-				GL11.glDrawElements(GL_TRIANGLES, model.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+				for (Entity entity : batch) {
+					preparedInstance(entity);
+					GL11.glDrawElements(GL_TRIANGLES, model1.getRawModel().getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
+
+				}
+				unBindTexturedModel();
 			}
-			unBindTexturedModel();
 		}
 	}
 
@@ -65,6 +69,8 @@ public class Render {
 	}
 
 	private void unBindTexturedModel(){
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);

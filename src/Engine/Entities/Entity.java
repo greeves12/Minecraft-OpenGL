@@ -14,12 +14,14 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.util.List;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 
 public class Entity{
 
-    private TexturedModel model;
+    private List<TexturedModel> model;
     private Vector3f position;
     private float rotX, rotY, rotZ;
     private float scale;
@@ -42,7 +44,7 @@ public class Entity{
         this.material = material;
     }
 
-    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
+    public Entity(List<TexturedModel> model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
         this.model = model;
         this.position = position;
         this.rotX = rotX;
@@ -65,11 +67,11 @@ public class Entity{
         this.rotZ += dz;
     }
 
-    public TexturedModel getModel() {
+    public List<TexturedModel> getModel() {
         return model;
     }
 
-    public void setModel(TexturedModel model) {
+    public void setModel(List<TexturedModel> model) {
         this.model = model;
     }
 

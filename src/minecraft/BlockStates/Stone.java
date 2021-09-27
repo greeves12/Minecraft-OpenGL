@@ -6,8 +6,10 @@ import Models.TexturedModel;
 import Shaders.StaticShader;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.util.List;
+
 public class Stone extends Entity {
-    public Stone(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
+    public Stone(List<TexturedModel> model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
         super(model,position, rotX, rotY, rotZ, scale, hasGravity, material);
     }
 
