@@ -10,8 +10,9 @@ import minecraft.BlockStates.GrassBlock;
 import minecraft.BlockStates.Material;
 import minecraft.ChunkGeneration.ChunkGeneration;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.*;
 
 import Models.RawModel;
 
@@ -20,6 +21,9 @@ import java.util.ArrayList;
 public class Main {
 
 	public static boolean running;
+	public static int counts = 0;
+
+	public static TexturedModel grassModel;
 
 	public static void main(String[] args) {
 		DisplayManager.createDisplay();
@@ -27,7 +31,7 @@ public class Main {
 		Loader loader = new Loader();
 		StaticShader shader = new StaticShader();
 		GrassShader grassShader = new GrassShader();
-		Render render = new Render(shader);
+
 		GrassRender grassRender = new GrassRender(grassShader);
 
 		running = true;
@@ -124,7 +128,7 @@ public class Main {
 		ModelTexture grass = new ModelTexture(loader.loadTexture("grass_block_side"));
 		ModelTexture emerald = new ModelTexture(loader.loadTexture("emerald_ore"));
 		TexturedModel emeraldModel = new TexturedModel(m2, emerald);
-		TexturedModel grassModel = new TexturedModel(model, grass);
+		 grassModel = new TexturedModel(model, grass);
 		TexturedModel dirtModel = new TexturedModel(m, dirt);
 
 		Camera camera = new Camera(0, 80, 0, 0, 0, 0);
@@ -132,10 +136,7 @@ public class Main {
 		ChunkGeneration generateWorld = new ChunkGeneration();
 		generateWorld.generateAroundPlayer((int)camera.getPosition().x, (int)camera.getPosition().y, (int)camera.getPosition().z);
 
-		ArrayList<Entity> grassBlocks = new ArrayList<>();
-		if(!generateWorld.loadedChunks.isEmpty()) {
-			 grassBlocks = generateWorld.loadedChunks.get(0).blocks;
-		}
+		ArrayList<Entity> grassBlocks = generateWorld.loadedChunks.get(0).blocks;
 
 
 
@@ -147,30 +148,26 @@ public class Main {
 
 		Mouse.setGrabbed(true);
 
+		float fps = 60;
+		double ns = 1000000000 / fps;
+		long last = System.nanoTime();
+		double delta = 0;
+
+		MasterRender render = new MasterRender();
 
 		while(!Display.isCloseRequested()) {
+
 			camera.move();
-			render.prepare();
 
-			int x = 0;
-
-			for(Entity entity : grassBlocks) {
-				if(entity.getMaterial() == Material.GRASS) {
-					GrassBlock block = (GrassBlock) entity;
-
-
-					if(x < 1024) {
-						block.render(block, shader, camera);
-
-					}
-					x++;
-				}
+			for(Entity entity : grassBlocks){
+				render.processEntity(entity);
 			}
 
+			render.render(camera);
 			DisplayManager.updateDisplayer();
+
 		}
 
-		shader.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 		Mouse.destroy();

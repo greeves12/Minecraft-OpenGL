@@ -2,6 +2,7 @@ package Engine.Entities;
 
 import Engine.Loader;
 import Models.RawModel;
+import Models.TexturedModel;
 import Textures.ModelTexture;
 
 public class EntityModels {
@@ -14,4 +15,5 @@ public class EntityModels {
     public static RawModel topModel = loader.loadToVAO(Entity.top_face, Entity.textureCoords, Entity.indices);
     public static RawModel bottomModel = loader.loadToVAO(Entity.bottom_face, Entity.textureCoords, Entity.indices);
     public static RawModel sideModel = loader.loadToVAO(Entity.vertices, Entity.textureCoords, Entity.indices);
+
 }

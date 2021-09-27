@@ -42,8 +42,8 @@ public class Entity{
         this.material = material;
     }
 
-    public Entity(Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
-        //this.model = model;
+    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale, boolean hasGravity, Material material) {
+        this.model = model;
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;

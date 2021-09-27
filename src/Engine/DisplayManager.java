@@ -42,7 +42,7 @@ public class DisplayManager {
 		delta = (current - frameTime) / 1000f;
 		frameTime = current;
 
-		System.out.println(delta);
+
 
 	}
 

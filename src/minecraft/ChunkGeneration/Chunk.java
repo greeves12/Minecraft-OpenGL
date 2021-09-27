@@ -4,6 +4,7 @@ import Engine.Entities.Entity;
 import minecraft.BlockStates.Block;
 import minecraft.BlockStates.GrassBlock;
 import minecraft.BlockStates.Material;
+import minecraft.Main;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ public class Chunk {
     private int endZ;
     private int endX;
 
-    public Entity block[][][] = new Entity[16][256][16];
+    public Entity[][][] block = new Entity[16][256][16];
+
 
 
     public Chunk loadChunk(int x, int y, int z){
@@ -55,8 +57,8 @@ public class Chunk {
                 for (int x1 = newX; x1 < endX; x1++) {
 
 
-                    blocks.add(new GrassBlock(new Vector3f((float) x1, (float) y1, (float) z1), 0, 0, 0, 1, false, Material.GRASS));
-                    block[x1+16][y1][z1+16] = new GrassBlock(new Vector3f((float) x1, (float) y1, (float) z1), 0, 0, 0, 1, false, Material.GRASS);
+                    blocks.add(new GrassBlock(Main.grassModel, new Vector3f((float) x1, (float) y1, (float) z1), 0, 0, 0, 1, false, Material.GRASS));
+                    block[x1+16][y1][z1+16] = new GrassBlock(Main.grassModel,new Vector3f((float) x1, (float) y1, (float) z1), 0, 0, 0, 1, false, Material.GRASS);
                 }
             }
         }

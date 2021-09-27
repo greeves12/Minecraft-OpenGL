@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Minecraft:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/Minecraft_jar</output-path>
+    <root id="archive" name="Minecraft.jar">
+      <element id="module-output" name="Minecraft" />
+      <element id="library" level="project" name="windows" />
+    </root>
+  </artifact>
+</component>
