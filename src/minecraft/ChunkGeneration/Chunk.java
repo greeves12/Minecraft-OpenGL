@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class Chunk {
 
-    public ArrayList<Entity> blocks = new ArrayList<>();
+    private ArrayList<Entity> blocks = new ArrayList<>();
     private int startX;
     private int startZ;
     private int endZ;
@@ -23,7 +23,9 @@ public class Chunk {
 
     public Entity[][][] block = new Entity[16][256][16];
 
-
+    public ArrayList<Entity> getBlocks() {
+        return blocks;
+    }
 
     public Chunk loadChunk(int x, int y, int z){
 
@@ -32,33 +34,39 @@ public class Chunk {
         if(x % 16 == 0){
                 newX = x - 16;
                 startX = x;
+                endX = startX + 16;
         }else{
             newX = x;
             while((newX % 16) != 0){
-                newX++;
+                newX--;
             }
 
-            newX = newX - 16;
+            //newX = newX - 16;
+            startX = newX;
 
-            endX = newX;
+            endX = newX+16;
         }
 
         if(z % 16 == 0){
             newZ = z - 16;
             startZ = z;
+            endZ = startZ + 16;
         }else{
             newZ = z;
             while((newZ % 16) != 0){
-                newZ++;
+                newZ--;
             }
-            newZ = newZ - 16;
-            endZ = newZ;
+            startZ = newZ;
+            endZ = newZ+16;
         }
+
+        System.out.println("Start X: " + startX + " End X: " + endX);
+        System.out.println("Start Z: " + startZ + " End Z: " + endZ);
 
         Random random = new Random();
         for(int y1 = 0; y1 < 80; y1++) {
-            for (int z1 = newZ; z1 < endZ; z1++) {
-                for (int x1 = newX; x1 < endX; x1++) {
+            for (int z1 = startZ; z1 < endZ; z1++) {
+                for (int x1 = startX; x1 < endX; x1++) {
                     ArrayList<TexturedModel> models = new ArrayList<>();
                     int randomNumber;
                     if(y1 > 78) {

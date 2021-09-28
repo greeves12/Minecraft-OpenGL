@@ -8,6 +8,7 @@ import Shaders.StaticShader;
 import Textures.ModelTexture;
 import minecraft.BlockStates.GrassBlock;
 import minecraft.BlockStates.Material;
+import minecraft.ChunkGeneration.Chunk;
 import minecraft.ChunkGeneration.ChunkGeneration;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
@@ -136,7 +137,8 @@ public class Main {
 		ChunkGeneration generateWorld = new ChunkGeneration();
 		generateWorld.generateAroundPlayer((int)camera.getPosition().x, (int)camera.getPosition().y, (int)camera.getPosition().z);
 
-		ArrayList<Entity> grassBlocks = generateWorld.loadedChunks.get(0).blocks;
+		ArrayList<Chunk> loadedChunks = generateWorld.getLoadedChunks();
+		//ArrayList<Entity> grassBlocks = generateWorld.loadedChunks.get(0).blocks;
 
 
 
@@ -159,8 +161,10 @@ public class Main {
 
 			camera.move();
 
-			for(Entity entity : grassBlocks){
-				render.processEntity(entity);
+			for(Chunk chunk : loadedChunks) {
+				for (Entity entity : chunk.getBlocks()) {
+					render.processEntity(entity);
+				}
 			}
 
 			render.render(camera);
